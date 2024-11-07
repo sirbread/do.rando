@@ -22,7 +22,7 @@ def log_score(score_type, score_value):
 
 def send_score(score, username):
     try:
-        response = requests.post("http://127.0.0.1:5000/submit_score", json={"score": score, "username": username})
+        response = requests.post("http://localhost:5000/submit_score", json={"score": score, "username": username})
         print(f"Score submission response: {response.json()}")
     except Exception as e:
         print(f"Failed to send score: {e}")
@@ -123,7 +123,7 @@ class UsernameWindow(QtWidgets.QWidget):
         self.check_username_availability()
 
     def check_username_availability(self):
-        response = requests.post("http://127.0.0.1:5000/submit_username", json={"username": username})
+        response = requests.post("http://localhost:5000/submit_username", json={"username": username})
 
         if response.status_code == 200:
             self.close()
