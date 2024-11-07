@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboard</title>
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fc;
+            color: #444;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #34495e; /* Dark background */
+            color: #ecf0f1; /* Light text color */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff; /* Light background */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+        }
+
+        .container.dark-mode {
+            background-color: #2c3e50; /* Darker container background */
+        }
+
+        h1 {
+            color: #2c3e50; /* Light title color in light mode */
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 36px;
+        }
+
+        body.dark-mode h1 {
+            color: #ecf0f1; /* Light title color in dark mode */
+        }
+
+        h2 {
+            color: #2c3e50; /* Black title color in light mode */
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 2px solid #2c3e50; /* Dark border color in light mode */
+            padding-bottom: 10px;
+        }
+
+        body.dark-mode h2 {
+            color: #ecf0f1; /* White title color in dark mode */
+            border-bottom: 2px solid #ecf0f1; /* Light border color in dark mode */
+        }
+
+        ol {
+            padding-left: 0; /* Remove left padding */
+            list-style: none;
+            counter-reset: item;
+            text-align: left; /* Ensure the list is aligned left */
+        }
+
+        li {
+            background-color: #ecf0f1; /* Light item background */
+            margin: 10px 0;
+            padding: 10px 15px; /* Add right padding */
+            border-radius: 6px;
+            display: block; /* Use block display */
+            width: calc(100% - 30px); /* Reduce width to prevent overflow */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; /* Initially hidden for animation */
+            transform: translateY(-20px); /* Start slightly above */
+            animation: floatIn 0.5s forwards; /* Animation */
+            color: #444; /* Default text color */
+            text-align: left; /* Ensure text is aligned to the left */
+            overflow: hidden; /* Prevent overflow */
+            white-space: nowrap; /* Prevent text from wrapping */
+        }
+
+
+        /* Change flex property that might have been previously applied */
+        li {
+            display: block; /* Set to block to maintain alignment */
+        }
+
+
+
+        body.dark-mode li {
+            background-color: #151c24; /* Darker item background */
+            color: #ecf0f1; /* Keep text color light in dark mode */
+        }
+
+        li:before {
+            content: counter(item) ". ";
+            counter-increment: item;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        li:hover {
+            background-color: #d1e7ff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .highest-scores {
+            margin-bottom: 40px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #2980b9;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            cursor: pointer; /* Change cursor to pointer */
+        }
+
+        .button-link:hover {
+            background-color: #1c5985;
+        }
+
+        .settings-button {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #2980b9; /* Button color */
+            border: none;
+            border-radius: 6px;
+            cursor: pointer; /* Change cursor to pointer */
+            margin-bottom: 20px; /* Space below the button */
+            transition: background-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .settings-button:hover {
+            background-color: #1c5985; /* Darker on hover */
+        }
+
+        .empty-message {
+            color: #7f8c8d;
+            text-align: center;
+            font-style: italic;
+        }
+
+        /* Settings menu styles */
+        .settings-menu {
+            position: absolute;
+            top: 60px; /* Below the settings button */
+            left: 20px; /* Align to the left */
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            display: none; /* Hidden by default */
+            transition: display 0.3s ease;
+        }
+
+        /* Dark mode settings menu */
+        .settings-menu.dark-mode {
+            background-color: #151c24; /* Darker settings menu */
+            color: #fff; /* Keep text light in dark mode */
+        }
+
+        /* Specific styles to prevent text inversion */
+        .settings-menu label {
+            color: #444; /* Default text color for light mode */
+        }
+
+        body.dark-mode .settings-menu label {
+            color: #fff; /* Keep text color light in dark mode */
+        }
+
+        @keyframes floatIn {
+            to {
+                opacity: 1; /* Fade in */
+                transform: translateY(0); /* Move to original position */
+            }
+        }
+
+
+        .empty-message {
+            counter-increment: none; /* Prevent the counter from incrementing */
+            color: #7f8c8d; /* Maintain the empty message styling */
+            text-align: center; /* Center align if needed */
+            font-style: italic; /* Style for the empty message */
+            margin: 10px 0; /* Optional: Reset margin if necessary */
+        }
+
+        .refreshed-label {
+            position: fixed;
+            bottom: 20px; /* Position at the bottom */
+            left: 50%; /* Center it horizontally */
+            transform: translateX(-50%); /* Center align */
+            background-color: #2980b9; /* Label background color */
+            color: #fff; /* Text color */
+            padding: 10px; /* Padding for the label */
+            border-radius: 5px; /* Rounded corners */
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.5s ease; /* Fade effect */
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+
+    </style>
+    <script>
+        // Fetch scores and update the leaderboard
+        function fetchScores() {
+            fetch('/scores')
+                .then(response => response.json())
+                .then(data => {
+                    updateScores(data.highest, data.lowest);
+                    showRefreshedLabel(); // Call this function here
+                });
+        }
+
+
+
+
+        function updateScores(highest, lowest) {
+            const highestScoresList = document.querySelector('.highest-scores');
+            highestScoresList.innerHTML = ''; // Clear existing scores
+            if (highest.length === 0) {
+                const div = document.createElement('div');
+                div.textContent = 'No scores yet.';
+                div.classList.add('empty-message'); // Ensure this class is applied
+                highestScoresList.appendChild(div); // Append to the list
+            } else {
+                highest.forEach(entry => {
+                    const li = document.createElement('li');
+                    li.textContent = `${entry.username}: ${entry.score}`;
+                    highestScoresList.appendChild(li);
+                });
+            }
+
+            const lowestScoresList = document.querySelector('ol:not(.highest-scores)');
+            lowestScoresList.innerHTML = ''; // Clear existing scores
+            if (lowest.length === 0) {
+                const div = document.createElement('div');
+                div.textContent = 'No scores yet.';
+                div.classList.add('empty-message'); // Ensure this class is applied
+                lowestScoresList.appendChild(div); // Append to the list
+            } else {
+                lowest.forEach(entry => {
+                    const li = document.createElement('li');
+                    li.textContent = `${entry.username}: ${entry.score}`;
+                    lowestScoresList.appendChild(li);
+                });
+            }
+        }
+
+
+
+        // Auto-refresh every 5 seconds
+        function autoRefresh() {
+            fetchScores();
+            setInterval(fetchScores, 5000);
+        }
+
+        // Toggle dark mode
+        function toggleDarkMode(checked) {
+            if (checked) {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.container').classList.add('dark-mode');
+                document.querySelector('.settings-menu').classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.querySelector('.container').classList.remove('dark-mode');
+                document.querySelector('.settings-menu').classList.remove('dark-mode');
+            }
+        }
+
+        // Handle settings toggle
+        function toggleSettingsMenu() {
+            const menu = document.querySelector('.settings-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // On window load
+        window.onload = function() {
+            autoRefresh();
+            // Reset settings
+            const darkModeCheckbox = document.getElementById('dark-mode');
+            darkModeCheckbox.checked = false;
+            toggleDarkMode(false);
+        };
+
+        // Update settings
+        function updateSettings() {
+            const darkModeCheckbox = document.getElementById('dark-mode');
+            toggleDarkMode(darkModeCheckbox.checked);
+        }
+
+        function showRefreshedLabel() {
+            const label = document.querySelector('.refreshed-label');
+            label.style.opacity = '1'; // Show label
+            setTimeout(() => {
+                label.style.opacity = '0'; // Hide after timeout
+            }, 2000); // Adjust duration as needed
+        }
+
+    </script>
+</head>
+<body>
+    <button class="settings-button" onclick="toggleSettingsMenu()">Settings</button>
+    <div class="settings-menu">
+        <label>
+            <input type="checkbox" id="dark-mode" onchange="updateSettings()"> Dark Mode
+        </label>
+    </div>
+    
+    <!-- Splash Image Outside of the Leaderboard Container -->
+    <img src="https://i.ibb.co/1JHhxXY/splash.png" alt="Splash Image" class="splash-image" />
+
+
+    <div class="container">
+        <h1>Leaderboard</h1>
+        <div class="highest-section">
+            <h2>Highest Scores</h2>
+            <ol class="highest-scores">
+                <li class="empty-message">No scores yet.</li>
+            </ol>
+        </div>
+        <div class="lowest-section">
+            <h2>Lowest Scores</h2>
+            <ol>
+                <li class="empty-message">No scores yet.</li>
+            </ol>
+        </div>
+    </div>
+    <div class="refreshed-label">Refreshed.</div>
+
+    <style>
+        /* Add this CSS inside your <style> tag */
+            .splash-image {
+                display: block;
+                margin: 0 auto;
+                width: 350px; /* Fixed width */
+            }
+
+    </style>
+</body>
+
+</html>
