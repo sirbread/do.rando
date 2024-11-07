@@ -1,0 +1,12 @@
+This is a local score log. 
+New highest achieved at 2024-11-07 01:36:34: 5.40981564145
+New lowest achieved at 2024-11-07 01:36:34: 5.40981564145
+New highest achieved at 2024-11-07 01:36:39: 6.21424702376
+New lowest achieved at 2024-11-07 01:36:46: 1.39191823483
+New lowest achieved at 2024-11-07 01:36:49: 0.17647353531
+New highest achieved at 2024-11-07 01:37:32: 2.22225446139
+New lowest achieved at 2024-11-07 01:37:32: 2.22225446139
+New lowest achieved at 2024-11-07 01:37:36: 1.51875246887
+New highest achieved at 2024-11-07 01:37:39: 6.60248996132
+New highest achieved at 2024-11-07 01:37:43: 9.50271045096
+New highest achieved at 2024-11-07 01:37:46: 9.85328125109
