@@ -1,6 +1,6 @@
-# Dö.rand (do > random)
+# Dö.rando (do > random)
 
-Dö.rand is a PyQt5-based random number rolling game where players compete to achieve the highest or lowest possible rolls, with each roll generating a random number that is 11 decimal places long. The goal is to roll either the highest or lowest number, and players create a username to submit their scores, which are then displayed on a local leaderboard.
+Dö.rando is a PyQt5-based random number rolling game where players compete to achieve the highest or lowest possible rolls, with each roll generating a random number that is 11 decimal places long. The goal is to roll either the highest or lowest number, and players create a username to submit their scores, which are then displayed on a local leaderboard.
 
 ## Requirements
 
